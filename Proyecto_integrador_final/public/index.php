@@ -7,7 +7,7 @@ $nombreSistema = "Inventario Ágil";
 <head>
     <meta charset="UTF-8">
     <title><?php echo $nombreSistema; ?></title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
 
