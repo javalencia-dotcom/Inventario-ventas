@@ -77,20 +77,46 @@ Además:
 
 ## Estructura del proyecto
 
+## Estructura del proyecto
+
+```
 inventario-ventas/
 │
 ├── models/
+│   ├── Producto.php
+│   └── Venta.php
+│
 ├── controllers/
+│   ├── ProductoController.php
+│   └── VentaController.php
+│
 ├── services/
+│   └── VentaService.php
 │
 ├── public/
 │   ├── index.php
 │   ├── productos.php
 │   ├── ventas.php
+│
 │   ├── css/
-│   └── js/
+│   │   └── styles.css
+│
+│   ├── js/
+│   │   ├── productos.js
+│   │   └── ventas.js
+│
+│   └── api/
+│       ├── validar_producto.php
+│       └── validar_venta.php
+│
+├── img/
+│   ├── captura1.png
+│   ├── captura2.png
+│   └── captura3.png
 │
 └── README.md
+```
+
 
 ---
 
@@ -167,13 +193,13 @@ public/api/validar_venta.php
 ## Capturas del sistema
 
 Página principal
-![Inicio](img/captura1.png)
+![Inicio](Proyecto_integrador_final/img/captura1.png)
 
 Gestión de productos
-![Productos](img/captura2.png)
+![Productos](Proyecto_integrador_final/img/captura2.png)
 
 Registro de ventas
-![Ventas](rimg/captura3.png)
+![Ventas](Proyecto_integrador_final/img/captura3.png)
 
 ---
 
