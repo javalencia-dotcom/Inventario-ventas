@@ -14,7 +14,7 @@ function cargarProductosVenta() {
         return;
     }
 
-    productosVenta.forEach(function(producto) {
+    productosVenta.forEach(producto => {
         productoVenta.innerHTML += `
             <option value="${producto.codigo}">
                 ${producto.nombre} - Stock: ${producto.stock}
@@ -23,31 +23,40 @@ function cargarProductosVenta() {
     });
 }
 
-function registrarVenta() {
+async function registrarVenta() {
+
     const codigoProducto = productoVenta.value;
     const cantidad = Number(cantidadVenta.value);
 
     if (codigoProducto === "") {
-        alert("No existe producto seleccionado");
+        alert("Seleccione un producto");
         return;
     }
 
-    if (cantidad <= 0) {
-        alert("La cantidad debe ser mayor a 0");
-        return;
-    }
-
-    const producto = productosVenta.find(function(item) {
-        return item.codigo == codigoProducto;
-    });
+    const producto = productosVenta.find(p => p.codigo == codigoProducto);
 
     if (!producto) {
         alert("Producto no encontrado");
         return;
     }
 
-    if (cantidad > producto.stock) {
-        alert("No se puede vender más del stock disponible");
+    // 🔥 VALIDACIÓN CON PHP
+    const respuesta = await fetch("api/validar_venta.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            stock: producto.stock,
+            cantidad: cantidad,
+            precio: producto.precio
+        })
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!resultado.estado) {
+        alert(resultado.mensaje);
         return;
     }
 
@@ -57,7 +66,7 @@ function registrarVenta() {
         idVenta: Date.now(),
         producto: producto.nombre,
         cantidad: cantidad,
-        total: cantidad * producto.precio,
+        total: resultado.total,
         fecha: new Date().toLocaleString()
     };
 
@@ -70,6 +79,8 @@ function registrarVenta() {
 
     cargarProductosVenta();
     mostrarVentas();
+
+    alert("Venta registrada correctamente");
 }
 
 function mostrarVentas() {
@@ -77,32 +88,29 @@ function mostrarVentas() {
 
     let totalGeneral = 0;
 
-    ventasAgiles.forEach(function(venta) {
-        totalGeneral += venta.total;
-    });
+    ventasAgiles.forEach(v => totalGeneral += v.total);
 
     resumenVentas.innerHTML = `
-        <strong>Total de ventas:</strong> ${ventasAgiles.length}
-        <br>
-        <strong>Ingresos generados:</strong> $${totalGeneral.toFixed(2)}
+        <strong>Total ventas:</strong> ${ventasAgiles.length} <br>
+        <strong>Ingresos:</strong> $${totalGeneral.toFixed(2)}
     `;
 
     if (ventasAgiles.length === 0) {
         tablaVentas.innerHTML = `
             <tr>
-                <td colspan="4" class="mensaje-vacio">No existen ventas registradas</td>
+                <td colspan="4" class="mensaje-vacio">No hay ventas registradas</td>
             </tr>
         `;
         return;
     }
 
-    ventasAgiles.forEach(function(venta) {
+    ventasAgiles.forEach(v => {
         tablaVentas.innerHTML += `
             <tr>
-                <td>${venta.producto}</td>
-                <td>${venta.cantidad}</td>
-                <td>$${venta.total.toFixed(2)}</td>
-                <td>${venta.fecha}</td>
+                <td>${v.producto}</td>
+                <td>${v.cantidad}</td>
+                <td>$${v.total.toFixed(2)}</td>
+                <td>${v.fecha}</td>
             </tr>
         `;
     });
