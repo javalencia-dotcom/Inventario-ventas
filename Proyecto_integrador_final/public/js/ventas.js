@@ -24,23 +24,66 @@ function cargarProductosVenta() {
 }
 
 async function registrarVenta() {
-
     const codigoProducto = productoVenta.value;
     const cantidad = Number(cantidadVenta.value);
 
     if (codigoProducto === "") {
-        alert("Seleccione un producto");
+        alert("No existe producto seleccionado");
         return;
     }
 
-    const producto = productosVenta.find(p => p.codigo == codigoProducto);
+    const producto = productosVenta.find(function(item) {
+        return item.codigo == codigoProducto;
+    });
 
     if (!producto) {
         alert("Producto no encontrado");
         return;
     }
 
-    // 🔥 VALIDACIÓN CON PHP
+    const respuesta = await fetch("api/validar_venta.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            stock: producto.stock,
+            cantidad: cantidad,
+            precio: producto.precio
+        })
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!resultado.estado) {
+        alert(resultado.mensaje);
+        return;
+    }
+
+    producto.stock -= cantidad;
+
+    const nuevaVenta = {
+        idVenta: Date.now(),
+        producto: producto.nombre,
+        cantidad: cantidad,
+        total: resultado.total,
+        fecha: new Date().toLocaleString()
+    };
+
+    ventasAgiles.push(nuevaVenta);
+
+    localStorage.setItem("productos_agiles", JSON.stringify(productosVenta));
+    localStorage.setItem("ventas_agiles", JSON.stringify(ventasAgiles));
+
+    cantidadVenta.value = "";
+
+    cargarProductosVenta();
+    mostrarVentas();
+
+    alert("Venta registrada correctamente");
+}
+
+    // VALIDACIÓN CON PHP
     const respuesta = await fetch("api/validar_venta.php", {
         method: "POST",
         headers: {
