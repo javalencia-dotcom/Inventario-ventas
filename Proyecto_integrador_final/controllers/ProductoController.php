@@ -1,28 +1,35 @@
 <?php
 
-require_once "../models/Producto.php";
+require_once __DIR__ . "/../models/Producto.php";
 
 class ProductoController {
 
-    public function crear($nombre, $stock, $precio) {
-        return new Producto(time(), $nombre, $stock, $precio);
-    }
-
     public function validar($nombre, $stock, $precio) {
 
-        if (empty($nombre)) {
-            return "Nombre vacío";
+        if (trim($nombre) === "") {
+            return [
+                "estado" => false,
+                "mensaje" => "El nombre del producto no puede estar vacío"
+            ];
         }
 
         if ($stock < 0) {
-            return "Stock inválido";
+            return [
+                "estado" => false,
+                "mensaje" => "El stock no puede ser negativo"
+            ];
         }
 
         if ($precio <= 0) {
-            return "Precio inválido";
+            return [
+                "estado" => false,
+                "mensaje" => "El precio debe ser mayor a 0"
+            ];
         }
 
-        return true;
+        return [
+            "estado" => true,
+            "mensaje" => "Producto válido"
+        ];
     }
-
 }
