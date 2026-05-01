@@ -167,13 +167,13 @@ public/api/validar_venta.php
 ## Capturas del sistema
 
 Página principal
-![Inicio](ruta/a/tu/captura1.png)
+![Inicio](img/captura1.png)
 
 Gestión de productos
-![Productos](ruta/a/tu/captura2.png)
+![Productos](img/captura2.png)
 
 Registro de ventas
-![Ventas](ruta/a/tu/captura3.png)
+![Ventas](rimg/captura3.png)
 
 ---
 
