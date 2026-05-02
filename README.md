@@ -157,6 +157,31 @@ El proyecto debe quedar en:
 C:\xampp\htdocs\Inventario-ventas\Proyecto_integrador_final\
 
 ---
+## Nota sobre descarga del repositorio
+
+Al descargar el proyecto desde GitHub en formato ZIP, el archivo se obtiene con un nombre que incluye el sufijo `-main`, por ejemplo:
+
+Inventario-ventas-main
+
+Este nombre es generado automáticamente por GitHub y no representa un error en el proyecto.
+
+Sin embargo, se recomienda renombrar la carpeta a:
+
+inventario-ventas
+
+Esto facilita el uso de rutas en el navegador y evita posibles inconvenientes al momento de ejecutar el sistema en un entorno local.
+
+Ejemplo:
+
+Ruta original:
+C:\xampp\htdocs\Inventario-ventas-main\
+
+Ruta recomendada:
+C:\xampp\htdocs\inventario-ventas\
+
+En caso de no renombrar la carpeta, se debe ajustar la URL de acceso en el navegador:
+
+http://localhost/Inventario-ventas-main/Proyecto_integrador_final/public/index.php
 
 ### Ejecución del sistema
 
